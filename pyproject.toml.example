@@ -1,0 +1,5 @@
+# Configuración de aerich para migraciones
+[tool.aerich]
+tortoise_orm = "rbac.infraestructure.output.persistence.tortoise.database.DatabaseConfig.get_config"
+location = "./migrations"
+src_folder = "./rbac"
