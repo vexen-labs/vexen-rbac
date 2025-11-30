@@ -217,3 +217,16 @@ class RoleRepository(IRoleRepositoryPort):
 		]
 
 		return role, permissions
+
+	async def list(self) -> list[Role]:
+		"""
+		Retrieve all roles.
+
+		Returns:
+			List of all role entities
+		"""
+		stmt = select(RoleModel).order_by(RoleModel.name)
+		result = await self.session.execute(stmt)
+		models = result.scalars().all()
+
+		return [RoleMapper.to_entity(model) for model in models]

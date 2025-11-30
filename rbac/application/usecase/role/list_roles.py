@@ -11,7 +11,24 @@ class ListRoles:
 
 	async def __call__(self) -> BaseResponse[list[RoleResponse]]:
 		try:
-			return BaseResponse.fail("List all roles not yet implemented in repository")
+			roles = await self.repository.list()
+
+			response_data = [
+				RoleResponse(
+					id=r.id,
+					name=r.name,
+					display_name=r.display_name,
+					description=r.description,
+					permissions=r.permissions if r.permissions else [],
+					permission_groups=r.permission_groups if r.permission_groups else [],
+					user_count=0,  # Not available in simple list
+					created_at=r.created_at,
+					updated_at=None,  # Role entity doesn't have updated_at
+				)
+				for r in roles
+			]
+
+			return BaseResponse.ok(response_data)
 
 		except Exception as e:
 			return BaseResponse.fail(f"Error listing roles: {str(e)}")

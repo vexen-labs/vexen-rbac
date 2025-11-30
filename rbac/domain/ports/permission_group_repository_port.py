@@ -31,3 +31,8 @@ class IPermissionGroupRepositoryPort(ABC):
 	@abstractmethod
 	async def count_permissions(self, group_id: int) -> int:
 		pass
+
+	@abstractmethod
+	async def list(self) -> list[PermissionGroup]:
+		"""Obtiene todos los grupos de permisos"""
+		pass

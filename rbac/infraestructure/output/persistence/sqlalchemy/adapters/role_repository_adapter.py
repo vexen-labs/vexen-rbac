@@ -72,3 +72,10 @@ class RoleRepositoryAdapter(IRoleRepositoryPort):
 			result = await repository.get_by_id_with_permissions(role_id)
 			await session.commit()
 			return result
+
+	async def list(self) -> list[Role]:
+		async with self._session_factory() as session:
+			repository = RoleRepository(session)
+			result = await repository.list()
+			await session.commit()
+			return result

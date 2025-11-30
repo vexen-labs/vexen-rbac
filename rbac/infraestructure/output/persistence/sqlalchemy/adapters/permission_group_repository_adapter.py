@@ -51,3 +51,10 @@ class PermissionGroupRepositoryAdapter(IPermissionGroupRepositoryPort):
 			result = await repository.count_permissions(group_id)
 			await session.commit()
 			return result
+
+	async def list(self) -> list[PermissionGroup]:
+		async with self._session_factory() as session:
+			repository = PermissionGroupRepository(session)
+			result = await repository.list()
+			await session.commit()
+			return result

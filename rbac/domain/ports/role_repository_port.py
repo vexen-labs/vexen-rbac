@@ -43,3 +43,8 @@ class IRoleRepositoryPort(ABC):
 	@abstractmethod
 	async def get_by_id_with_permissions(self, role_id: int) -> tuple[Role, list] | None:
 		pass
+
+	@abstractmethod
+	async def list(self) -> list[Role]:
+		"""Obtiene todos los roles"""
+		pass

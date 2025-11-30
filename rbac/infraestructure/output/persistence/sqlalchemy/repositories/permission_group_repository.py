@@ -168,3 +168,16 @@ class PermissionGroupRepository(IPermissionGroupRepositoryPort):
 			return 0
 
 		return len(model.permissions)
+
+	async def list(self) -> list[PermissionGroup]:
+		"""
+		Retrieve all permission groups.
+
+		Returns:
+			List of all permission group entities
+		"""
+		stmt = select(PermissionGroupModel).order_by(PermissionGroupModel.name)
+		result = await self.session.execute(stmt)
+		models = result.scalars().all()
+
+		return [PermissionGroupMapper.to_entity(model) for model in models]

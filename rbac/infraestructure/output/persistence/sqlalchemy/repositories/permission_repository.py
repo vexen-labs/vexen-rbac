@@ -106,3 +106,16 @@ class PermissionRepository(IPermissionRepositoryPort):
 			grouped[permission.category].append(permission)
 
 		return grouped
+
+	async def list(self) -> list[Permission]:
+		"""
+		Retrieve all permissions.
+
+		Returns:
+			List of all permission entities
+		"""
+		stmt = select(PermissionModel).order_by(PermissionModel.name)
+		result = await self.session.execute(stmt)
+		models = result.scalars().all()
+
+		return [PermissionMapper.to_entity(model) for model in models]

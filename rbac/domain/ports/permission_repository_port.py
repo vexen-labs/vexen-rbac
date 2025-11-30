@@ -23,3 +23,8 @@ class IPermissionRepositoryPort(ABC):
 	@abstractmethod
 	async def group_by_category(self) -> dict[str, list[Permission]]:
 		pass
+
+	@abstractmethod
+	async def list(self) -> list[Permission]:
+		"""Obtiene todos los permisos"""
+		pass
