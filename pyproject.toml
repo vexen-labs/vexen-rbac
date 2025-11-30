@@ -49,10 +49,10 @@ dependencies = [
 dev = ["pytest>=9.0.1", "pytest-asyncio>=0.23.0", "ruff>=0.14.7", "mypy>=1.8.0"]
 
 [project.urls]
-Homepage = "https://github.com/vexen-labs/rbac"
-Documentation = "https://github.com/vexen-labs/rbac#readme"
-Repository = "https://github.com/vexen-labs/rbac"
-Issues = "https://github.com/vexen-labs/rbac/issues"
+Homepage = "https://github.com/vexen-labs/vexen-rbac"
+Documentation = "https://github.com/vexen-labs/vexen-rbac#readme"
+Repository = "https://github.com/vexen-labs/vexen-rbac"
+Issues = "https://github.com/vexen-labs/vexen-rbac/issues"
 
 [dependency-groups]
 dev = ["pytest>=9.0.1", "ruff>=0.14.7"]
