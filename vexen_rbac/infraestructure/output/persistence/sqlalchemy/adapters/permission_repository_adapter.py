@@ -1,4 +1,5 @@
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
+
 from vexen_rbac.domain.entity import Permission
 from vexen_rbac.domain.ports import IPermissionRepositoryPort
 from vexen_rbac.infraestructure.output.persistence.sqlalchemy.repositories import (
