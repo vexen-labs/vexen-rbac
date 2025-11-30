@@ -49,7 +49,7 @@ jobs:
     # Puedes agregar protecciones como reviewers requeridos antes de publicar
     environment:
       name: pypi
-      url: https://pypi.org/project/rbac/${{ github.event.release.tag_name }}
+      url: https://pypi.org/project/vexen-rbac/${{ github.event.release.tag_name }}
 
     steps:
       - name: Retrieve release distributions
