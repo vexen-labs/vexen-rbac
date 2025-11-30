@@ -27,7 +27,7 @@ uv pip install rbac
 
 ```python
 from rbac import RBAC
-from rbac.application.dto import CreateRoleRequest
+from vexen_rbac.application.dto import CreateRoleRequest
 
 # Initialize RBAC
 rbac = RBAC(database_url="postgresql+asyncpg://user:pass@localhost/db")

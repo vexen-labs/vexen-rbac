@@ -18,7 +18,7 @@ uv pip install -e .
 
 ```python
 from rbac import RBAC
-from rbac.application.dto import CreateRoleRequest
+from vexen_rbac.application.dto import CreateRoleRequest
 
 # Initialize RBAC (similar to FastAPI app instance)
 rbac = RBAC(
@@ -116,7 +116,7 @@ rbac = RBAC(config=config)
 
 ```python
 # Create role
-from rbac.application.dto import CreateRoleRequest
+from vexen_rbac.application.dto import CreateRoleRequest
 
 role_request = CreateRoleRequest(
     name="admin",
@@ -134,7 +134,7 @@ result = await rbac.roles.get_role(role_id=1)
 result = await rbac.roles.list_roles()
 
 # Update role
-from rbac.application.dto import UpdateRoleRequest
+from vexen_rbac.application.dto import UpdateRoleRequest
 
 update_request = UpdateRoleRequest(
     display_name="Super Administrator"
@@ -149,7 +149,7 @@ result = await rbac.roles.delete_role(role_id=1)
 
 ```python
 # Create permission
-from rbac.application.dto import CreatePermissionRequest
+from vexen_rbac.application.dto import CreatePermissionRequest
 
 perm_request = CreatePermissionRequest(
     name="users.read",
@@ -166,7 +166,7 @@ result = await rbac.permissions.get_permission(permission_id=1)
 result = await rbac.permissions.list_permissions()
 
 # Update permission
-from rbac.application.dto import UpdatePermissionRequest
+from vexen_rbac.application.dto import UpdatePermissionRequest
 
 update_request = UpdatePermissionRequest(
     display_name="View All Users"
@@ -184,7 +184,7 @@ result = await rbac.permissions.delete_permission(permission_id=1)
 
 ```python
 # Create permission group
-from rbac.application.dto import CreatePermissionGroupRequest
+from vexen_rbac.application.dto import CreatePermissionGroupRequest
 
 group_request = CreatePermissionGroupRequest(
     name="user_management",
@@ -201,7 +201,7 @@ result = await rbac.permission_groups.get_permission_group(group_id=1)
 result = await rbac.permission_groups.list_permission_groups()
 
 # Update permission group
-from rbac.application.dto import UpdatePermissionGroupRequest
+from vexen_rbac.application.dto import UpdatePermissionGroupRequest
 
 update_request = UpdatePermissionGroupRequest(
     display_name="Complete User Management"
@@ -278,7 +278,7 @@ DB_MAX_OVERFLOW=20
 ```python
 import asyncio
 from rbac import RBAC
-from rbac.application.dto import (
+from vexen_rbac.application.dto import (
     CreatePermissionRequest,
     CreateRoleRequest,
 )
