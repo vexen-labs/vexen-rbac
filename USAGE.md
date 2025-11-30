@@ -14,13 +14,13 @@ uv pip install -e .
 
 ## Quick Start
 
-### Basic Usage
+### Recommended: Direct Instantiation (For Applications)
 
 ```python
 from rbac import RBAC
 from rbac.application.dto import CreateRoleRequest
 
-# Initialize RBAC
+# Initialize RBAC (similar to FastAPI app instance)
 rbac = RBAC(
     database_url="postgresql+asyncpg://user:pass@localhost/db"
 )
@@ -28,18 +28,18 @@ rbac = RBAC(
 # Initialize database
 await rbac.init()
 
-# Use the services
+# Use the services throughout your application
 role_request = CreateRoleRequest(
     name="admin",
     display_name="Administrator"
 )
 result = await rbac.roles.create_role(role_request)
 
-# Always close when done
+# Close when shutting down application
 await rbac.close()
 ```
 
-### Recommended: Context Manager
+### Alternative: Context Manager (For Scripts/Tests)
 
 ```python
 from rbac import RBAC
@@ -54,6 +54,31 @@ async with RBAC(database_url="postgresql+asyncpg://...") as rbac:
 
     # Create permission groups
     group_result = await rbac.permission_groups.create_permission_group(group_data)
+```
+
+### Usage in FastAPI
+
+```python
+from fastapi import FastAPI
+from rbac import RBAC
+
+app = FastAPI()
+
+# Create RBAC instance (similar to creating FastAPI app)
+rbac = RBAC(database_url="postgresql+asyncpg://user:pass@localhost/db")
+
+@app.on_event("startup")
+async def startup():
+    await rbac.init()
+
+@app.on_event("shutdown")
+async def shutdown():
+    await rbac.close()
+
+@app.get("/roles")
+async def list_roles(page: int = 1, page_size: int = 20):
+    result = await rbac.service.list_roles_paginated(page, page_size)
+    return result
 ```
 
 ## Configuration

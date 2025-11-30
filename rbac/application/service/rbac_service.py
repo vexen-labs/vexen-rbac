@@ -79,3 +79,36 @@ class RBACService:
 
 	async def delete_permission_group(self, permission_group_id: int):
 		return await self.permission_groups.delete_permission_group(permission_group_id)
+
+	async def add_permissions_to_role(self, role_id: int, permission_ids: list[int]):
+		return await self.roles.add_permissions(role_id, permission_ids)
+
+	async def remove_permissions_from_role(self, role_id: int, permission_ids: list[int]):
+		return await self.roles.remove_permissions(role_id, permission_ids)
+
+	async def add_permissions_to_group(self, group_id: int, permission_ids: list[int]):
+		return await self.permission_groups.add_permissions(group_id, permission_ids)
+
+	async def remove_permissions_from_group(self, group_id: int, permission_ids: list[int]):
+		return await self.permission_groups.remove_permissions(group_id, permission_ids)
+
+	async def count_roles(self):
+		return await self.roles.count_roles()
+
+	async def count_role_permissions(self, role_id: int):
+		return await self.roles.count_permissions(role_id)
+
+	async def count_group_permissions(self, group_id: int):
+		return await self.permission_groups.count_permissions(group_id)
+
+	async def list_roles_paginated(self, page: int = 1, page_size: int = 20):
+		from rbac.application.dto import PaginationRequest
+
+		request = PaginationRequest(page=page, page_size=page_size)
+		return await self.roles.list_roles_paginated(request)
+
+	async def get_role_expanded(self, role_id: int):
+		return await self.roles.get_role_expanded(role_id)
+
+	async def get_permissions_grouped(self):
+		return await self.permissions.get_permissions_grouped()

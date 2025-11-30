@@ -18,7 +18,7 @@ class RolePermissionAssociation(Base):
 	This represents the many-to-many relationship between roles and permissions.
 	"""
 
-	__tablename__ = "role_permissions"
+	__tablename__ = "role_m2m_permissions"
 
 	role_id: Mapped[int] = mapped_column(
 		ForeignKey("roles.id", ondelete="CASCADE"), primary_key=True
@@ -38,7 +38,7 @@ class RolePermissionGroupAssociation(Base):
 	This represents the many-to-many relationship between roles and permission groups.
 	"""
 
-	__tablename__ = "role_permission_groups"
+	__tablename__ = "role_m2m_permission_groups"
 
 	role_id: Mapped[int] = mapped_column(
 		ForeignKey("roles.id", ondelete="CASCADE"), primary_key=True
@@ -62,7 +62,7 @@ class PermissionGroupPermissionAssociation(Base):
 	and permissions.
 	"""
 
-	__tablename__ = "permission_group_permissions"
+	__tablename__ = "permission_m2m_group_permissions"
 
 	permission_group_id: Mapped[int] = mapped_column(
 		ForeignKey("permission_groups.id", ondelete="CASCADE"), primary_key=True

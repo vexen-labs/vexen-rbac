@@ -88,3 +88,21 @@ class PermissionRepository(IPermissionRepositoryPort):
 		if model:
 			await self.session.delete(model)
 			await self.session.flush()
+
+	async def group_by_category(self) -> dict[str, list[Permission]]:
+		from rbac.infraestructure.output.persistence.sqlalchemy.mappers.permission_mapper import (
+			PermissionMapper,
+		)
+
+		stmt = select(PermissionModel).order_by(PermissionModel.category, PermissionModel.name)
+		result = await self.session.execute(stmt)
+		models = result.scalars().all()
+
+		grouped = {}
+		for model in models:
+			permission = PermissionMapper.to_entity(model)
+			if permission.category not in grouped:
+				grouped[permission.category] = []
+			grouped[permission.category].append(permission)
+
+		return grouped

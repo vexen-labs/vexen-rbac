@@ -2,7 +2,7 @@
 SQLAlchemy 2.0 implementation of Role repository with async sessions.
 """
 
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from rbac.domain.entity.role import Role
@@ -128,3 +128,92 @@ class RoleRepository(IRoleRepositoryPort):
 			result = await self.session.execute(stmt)
 			permission_groups = result.scalars().all()
 			model.permission_groups.extend(permission_groups)
+
+	async def add_permissions(self, role_id: int, permission_ids: list[int]) -> Role:
+		stmt = select(RoleModel).where(RoleModel.id == role_id)
+		result = await self.session.execute(stmt)
+		model = result.scalar_one_or_none()
+
+		if not model:
+			raise ValueError(f"Role with id {role_id} not found")
+
+		perm_stmt = select(PermissionModel).where(PermissionModel.id.in_(permission_ids))
+		perm_result = await self.session.execute(perm_stmt)
+		permissions = perm_result.scalars().all()
+
+		existing_ids = {p.id for p in model.permissions}
+		for permission in permissions:
+			if permission.id not in existing_ids:
+				model.permissions.append(permission)
+
+		await self.session.flush()
+		await self.session.refresh(model)
+
+		return RoleMapper.to_entity(model)
+
+	async def remove_permissions(self, role_id: int, permission_ids: list[int]) -> Role:
+		stmt = select(RoleModel).where(RoleModel.id == role_id)
+		result = await self.session.execute(stmt)
+		model = result.scalar_one_or_none()
+
+		if not model:
+			raise ValueError(f"Role with id {role_id} not found")
+
+		model.permissions = [p for p in model.permissions if p.id not in permission_ids]
+
+		await self.session.flush()
+		await self.session.refresh(model)
+
+		return RoleMapper.to_entity(model)
+
+	async def count(self) -> int:
+		stmt = select(func.count()).select_from(RoleModel)
+		result = await self.session.execute(stmt)
+		return result.scalar_one()
+
+	async def count_permissions(self, role_id: int) -> int:
+		stmt = select(RoleModel).where(RoleModel.id == role_id)
+		result = await self.session.execute(stmt)
+		model = result.scalar_one_or_none()
+
+		if not model:
+			return 0
+
+		return len(model.permissions)
+
+	async def list_paginated(self, page: int, page_size: int) -> tuple[list[Role], int]:
+		offset = (page - 1) * page_size
+
+		count_stmt = select(func.count()).select_from(RoleModel)
+		total_result = await self.session.execute(count_stmt)
+		total = total_result.scalar_one()
+
+		stmt = (
+			select(RoleModel).offset(offset).limit(page_size).order_by(RoleModel.created_at.desc())
+		)
+		result = await self.session.execute(stmt)
+		models = result.scalars().all()
+
+		roles = [RoleMapper.to_entity(model) for model in models]
+		return roles, total
+
+	async def get_by_id_with_permissions(self, role_id: int) -> tuple[Role, list] | None:
+		stmt = select(RoleModel).where(RoleModel.id == role_id)
+		result = await self.session.execute(stmt)
+		model = result.scalar_one_or_none()
+
+		if model is None:
+			return None
+
+		role = RoleMapper.to_entity(model)
+		permissions = [
+			{
+				"id": p.id,
+				"name": p.name,
+				"display_name": p.display_name,
+				"category": p.category,
+			}
+			for p in model.permissions
+		]
+
+		return role, permissions

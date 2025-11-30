@@ -5,6 +5,7 @@ from rbac.domain.ports.permission_repository_port import IPermissionRepositoryPo
 from .create_permission import CreatePermission
 from .delete_permission import DeletePermission
 from .get_permission import GetPermission
+from .get_permissions_grouped import GetPermissionsGrouped
 from .list_permissions import ListPermissions
 from .update_permission import UpdatePermission
 
@@ -19,3 +20,4 @@ class PermissionUseCaseFactory:
 		self.delete_permission = DeletePermission(self.repository)
 		self.update_permission = UpdatePermission(self.repository)
 		self.list_permissions = ListPermissions(self.repository)
+		self.get_permissions_grouped = GetPermissionsGrouped(self.repository)

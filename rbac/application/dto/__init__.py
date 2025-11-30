@@ -3,9 +3,16 @@ Data Transfer Objects for the application layer.
 """
 
 from rbac.application.dto.base import BaseResponse
+from rbac.application.dto.pagination import (
+	PaginatedResponse,
+	PaginationRequest,
+	PaginationResponse,
+)
 from rbac.application.dto.permission_dto import (
 	CreatePermissionRequest,
+	PermissionGroupByCategoryResponse,
 	PermissionResponse,
+	PermissionSimpleResponse,
 	UpdatePermissionRequest,
 )
 from rbac.application.dto.permission_group_dto import (
@@ -15,22 +22,26 @@ from rbac.application.dto.permission_group_dto import (
 )
 from rbac.application.dto.role_dto import (
 	CreateRoleRequest,
+	RoleExpandedResponse,
 	RoleResponse,
 	UpdateRoleRequest,
 )
 
 __all__ = [
 	"BaseResponse",
-	# Permission DTOs
 	"PermissionResponse",
+	"PermissionSimpleResponse",
 	"CreatePermissionRequest",
 	"UpdatePermissionRequest",
-	# PermissionGroup DTOs
+	"PermissionGroupByCategoryResponse",
 	"PermissionGroupResponse",
 	"CreatePermissionGroupRequest",
 	"UpdatePermissionGroupRequest",
-	# Role DTOs
 	"RoleResponse",
+	"RoleExpandedResponse",
 	"CreateRoleRequest",
 	"UpdateRoleRequest",
+	"PaginationRequest",
+	"PaginationResponse",
+	"PaginatedResponse",
 ]

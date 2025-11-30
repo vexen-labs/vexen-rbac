@@ -1,21 +1,29 @@
-"""
-DTOs for Role use cases.
-"""
-
 from dataclasses import dataclass
 from datetime import datetime
+
+from rbac.application.dto.permission_dto import PermissionSimpleResponse
 
 
 @dataclass
 class RoleResponse:
-	"""Response DTO for Role."""
-
 	id: int
 	name: str
 	display_name: str
 	description: str | None
 	permissions: list[int]
 	permission_groups: list[int]
+	user_count: int
+	created_at: datetime
+	updated_at: datetime | None
+
+
+@dataclass
+class RoleExpandedResponse:
+	id: int
+	name: str
+	display_name: str
+	description: str | None
+	permissions: list[PermissionSimpleResponse]
 	user_count: int
 	created_at: datetime
 	updated_at: datetime | None

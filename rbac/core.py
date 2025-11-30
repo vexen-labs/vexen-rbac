@@ -85,7 +85,9 @@ class RBAC:
 
 		self._initialized = False
 		self._service: RBACService | None = None
-		self._repositories: dict[str, IPermissionGroupRepositoryPort | IPermissionRepositoryPort | IRoleRepositoryPort] = {}
+		self._repositories: dict[
+			str, IPermissionGroupRepositoryPort | IPermissionRepositoryPort | IRoleRepositoryPort
+		] = {}
 
 	async def init(self) -> None:
 		"""
@@ -130,7 +132,7 @@ class RBAC:
 		self._session_factory = DatabaseConfig.get_session_factory()
 
 		# Create repository wrappers that manage sessions
-		from rbac.adapters import (
+		from rbac.infraestructure.output.persistence.sqlalchemy.adapters import (
 			PermissionGroupRepositoryAdapter,
 			PermissionRepositoryAdapter,
 			RoleRepositoryAdapter,
@@ -233,9 +235,7 @@ class RBAC:
 			RuntimeError: If not initialized
 		"""
 		if not self._initialized or self._service is None:
-			raise RuntimeError(
-				"RBAC is not initialized. Call 'await rbac.init()' first."
-			)
+			raise RuntimeError("RBAC is not initialized. Call 'await rbac.init()' first.")
 
 	async def health_check(self) -> bool:
 		"""

@@ -18,5 +18,8 @@ class IPermissionRepositoryPort(ABC):
 
 	@abstractmethod
 	async def delete(self, permission_id: int) -> None:
-		"""Elimina un permiso por su ID"""
+		pass
+
+	@abstractmethod
+	async def group_by_category(self) -> dict[str, list[Permission]]:
 		pass

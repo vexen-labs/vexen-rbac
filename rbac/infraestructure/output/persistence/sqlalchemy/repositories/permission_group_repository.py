@@ -121,3 +121,50 @@ class PermissionGroupRepository(IPermissionGroupRepositoryPort):
 			result = await self.session.execute(stmt)
 			permissions = result.scalars().all()
 			model.permissions.extend(permissions)
+
+	async def add_permissions(self, group_id: int, permission_ids: list[int]) -> PermissionGroup:
+		stmt = select(PermissionGroupModel).where(PermissionGroupModel.id == group_id)
+		result = await self.session.execute(stmt)
+		model = result.scalar_one_or_none()
+
+		if not model:
+			raise ValueError(f"Permission group with id {group_id} not found")
+
+		perm_stmt = select(PermissionModel).where(PermissionModel.id.in_(permission_ids))
+		perm_result = await self.session.execute(perm_stmt)
+		permissions = perm_result.scalars().all()
+
+		existing_ids = {p.id for p in model.permissions}
+		for permission in permissions:
+			if permission.id not in existing_ids:
+				model.permissions.append(permission)
+
+		await self.session.flush()
+		await self.session.refresh(model)
+
+		return PermissionGroupMapper.to_entity(model)
+
+	async def remove_permissions(self, group_id: int, permission_ids: list[int]) -> PermissionGroup:
+		stmt = select(PermissionGroupModel).where(PermissionGroupModel.id == group_id)
+		result = await self.session.execute(stmt)
+		model = result.scalar_one_or_none()
+
+		if not model:
+			raise ValueError(f"Permission group with id {group_id} not found")
+
+		model.permissions = [p for p in model.permissions if p.id not in permission_ids]
+
+		await self.session.flush()
+		await self.session.refresh(model)
+
+		return PermissionGroupMapper.to_entity(model)
+
+	async def count_permissions(self, group_id: int) -> int:
+		stmt = select(PermissionGroupModel).where(PermissionGroupModel.id == group_id)
+		result = await self.session.execute(stmt)
+		model = result.scalar_one_or_none()
+
+		if not model:
+			return 0
+
+		return len(model.permissions)

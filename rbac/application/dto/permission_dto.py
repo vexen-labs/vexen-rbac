@@ -30,9 +30,22 @@ class CreatePermissionRequest:
 
 @dataclass
 class UpdatePermissionRequest:
-	"""Request DTO for updating a Permission."""
-
 	name: str | None = None
 	display_name: str | None = None
 	description: str | None = None
 	category: str | None = None
+
+
+@dataclass
+class PermissionSimpleResponse:
+	id: int
+	name: str
+	display_name: str
+	category: str
+
+
+@dataclass
+class PermissionGroupByCategoryResponse:
+	category: str
+	display_name: str
+	permissions: list[PermissionSimpleResponse]

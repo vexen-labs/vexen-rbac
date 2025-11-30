@@ -18,5 +18,16 @@ class IPermissionGroupRepositoryPort(ABC):
 
 	@abstractmethod
 	async def delete(self, permission_group_id: int) -> None:
-		"""Elimina un grupo de permisos por su ID"""
+		pass
+
+	@abstractmethod
+	async def add_permissions(self, group_id: int, permission_ids: list[int]) -> PermissionGroup:
+		pass
+
+	@abstractmethod
+	async def remove_permissions(self, group_id: int, permission_ids: list[int]) -> PermissionGroup:
+		pass
+
+	@abstractmethod
+	async def count_permissions(self, group_id: int) -> int:
 		pass
