@@ -22,5 +22,4 @@ Context manager usage:
 
 from .core import RBAC, RBACConfig
 
-__version__ = "0.1.0"
 __all__ = ["RBAC", "RBACConfig"]
